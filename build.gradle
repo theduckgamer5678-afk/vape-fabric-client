@@ -12,15 +12,19 @@ base {
 
 repositories {
 	maven { url = "https://terraformersmc.com" }
-	maven { url = "https://cafeteria.dev" }
+	maven { url = "https://cafeteria.dev" } 
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	// This line tells Loom to build mappings directly from your 26.3 game file instead of checking external yarn servers!
-	mappings loom.officialMojangMappings() 
+    
+	// 🟢 FIX: Replaces the broken official mappings with fallback runtime intermediary translation layers
+	mappings loom.layered() {
+		officialMojangMappings()
+		intermediaryMappings()
+	}
+    
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
