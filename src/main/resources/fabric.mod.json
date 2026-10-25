@@ -1,20 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "vape",
+  "id": "vapeclient",
   "version": "${version}",
-  "name": "Vape Mod V4 Engine",
-  "description": "Utility Mod Framework",
-  "authors": [ "YourName" ],
-  "license": "MIT",
+  "name": "Vape Client",
   "environment": "client",
   "entrypoints": {
-    "main": [
-      "com.client.vape.VapeClient"
-    ]
+    "client": ["com.client.vape.VapeClient"]
   },
   "depends": {
-    "fabricloader": ">=0.20.1",
+    "fabricloader": ">=0.19.3",
     "minecraft": "~26.3",
-    "sodium": ">=0.6.0"
+    "java": ">=25",
+    "fabric-api": "*"
   }
 }
