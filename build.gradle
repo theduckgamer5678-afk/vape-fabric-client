@@ -1,10 +1,7 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
-
-version = project.version
-group = project.group
 
 base {
 	archivesName = "vapeclient"
@@ -12,24 +9,15 @@ base {
 
 repositories {
 	maven { url = "https://terraformersmc.com" }
-	maven { url = "https://cafeteria.dev" } 
+	maven { url = "https://cafeteria.dev" }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    
-	// 🟢 FIX: Tells Loom to generate blank mappings dynamically so it completely skips the crashing 26.3 version string verification check
-	mappings loom.officialMojangMappings()
-    
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-}
+	// No mappings line: Minecraft 26.x is unobfuscated
 
-// 🟢 FIX: Forces the compiler engine to skip failing metadata checks on non-standard version strings
-configurations.all {
-    resolutionStrategy {
-        force "net.fabricmc:intermediary:${project.minecraft_version}"
-    }
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
 processResources {
@@ -40,11 +28,11 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
 	withSourcesJar()
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
