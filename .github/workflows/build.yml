@@ -1,30 +1,49 @@
-# Automatically build the project and run any configured tests for every push
-# and submitted pull request. This can help catch issues that only occur on
-# certain platforms or Java versions, and provides a first line of defence
-# against bad commits.
-
-name: build
-on: [pull_request, push]
+name: Build Mod Jar
+on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
-        uses: actions/checkout@v6
-      - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v6
-      - name: setup jdk
-        uses: actions/setup-java@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
         with:
+          distribution: 'temurin'
           java-version: '25'
-          distribution: 'microsoft'
-      - name: make gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: build
-        run: ./gradlew build
-      - name: capture build artifacts
-        uses: actions/upload-artifact@v7
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          name: Artifacts
-          path: build/libs/
+          gradle-version: '9.7.1'
+
+      - name: Build
+        run: gradle build
+
+      - name: Dump Minecraft names
+        if: always()
+        run: |
+          for j in $(find ~/.gradle -name "*.jar" -size +10M); do
+            if unzip -l "$j" 2>/dev/null | grep -q "net/minecraft/client/Minecraft.class"; then
+              echo "JAR: $j"
+              unzip -l "$j" | awk '{print $4}' | grep -E "GuiGraphics|screens/Screen\.class|KeyMapping|blaze3d/platform/(Window|InputConstants)|network/chat/Component\.class|client/Minecraft\.class" | head -40
+              echo "--- Screen"
+              javap -cp "$j" net.minecraft.client.gui.screens.Screen 2>&1 | grep -E "render|extract|mouseClicked|shouldPause|font|Background" | head -30
+              echo "--- Window"
+              javap -cp "$j" com.mojang.blaze3d.platform.Window 2>&1 | grep -iE "handle|window\(" | head -10
+              echo "--- Minecraft"
+              javap -cp "$j" net.minecraft.client.Minecraft 2>&1 | grep -E "getWindow|setScreen| screen|getInstance|player" | head -10
+              break
+            fi
+          done
+          echo "--- LWJGL"
+          find ~/.gradle -name "lwjgl*glfw*" | head -5
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vape-Client-Jar
+          path: build/libs/*.jar
+          if-no-files-found: error
