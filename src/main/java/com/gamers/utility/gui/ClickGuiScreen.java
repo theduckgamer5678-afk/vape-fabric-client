@@ -25,6 +25,7 @@ public class ClickGuiScreen extends Screen {
     private final List<Hit> hits = new ArrayList<>();
     private Category selected = Category.COMBAT;
     private Module expanded = null;
+    private int curX, curY;
 
     public ClickGuiScreen(ModuleManager manager) {
         super(Component.literal("Gamers Utility Cheats"));
@@ -45,6 +46,7 @@ public class ClickGuiScreen extends Screen {
     public void extractRenderState(GuiGraphicsExtractor g, int mx, int my, float delta) {
         super.extractRenderState(g, mx, my, delta);
         hits.clear();
+        curX = mx; curY = my;
 
         int w = Math.min(420, this.width - 16);
         int h = Math.min(250, this.height - 16);
@@ -112,7 +114,7 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        double mx = event.x(), my = event.y();
+        double mx = curX, my = curY;
         int b = event.button();
         for (int i = hits.size() - 1; i >= 0; i--) {
             Hit hit = hits.get(i);
