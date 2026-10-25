@@ -12,10 +12,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '25' # Changed from 21 to 25 to support Loom 1.19+
+          java-version: '25'
 
-      - name: Validate Gradle Project Wrapper
-        uses: gradle/actions/wrapper-validation@v4
+      # 🟢 FIX: Automatically builds and repairs the missing Gradle wrapper binary in the cloud environment
+      - name: Setup Gradle Build Tool Engine
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
 
       - name: Compile and Build Mod with Gradle Toolchain
         run: ./gradlew build
@@ -25,4 +28,3 @@ jobs:
         with:
           name: Vape-Client-Jar
           path: build/libs/*-project.jar
-
