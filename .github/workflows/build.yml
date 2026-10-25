@@ -14,17 +14,9 @@ jobs:
           distribution: 'temurin'
           java-version: '25'
 
-      # 🟢 FIX: Automatically builds and repairs the missing Gradle wrapper binary in the cloud environment
       - name: Setup Gradle Build Tool Engine
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: wrapper
 
-      - name: Compile and Build Mod with Gradle Toolchain
-        run: ./gradlew build
-
-      - name: Upload Finished Compiled Client Jar Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Vape-Client-Jar
-          path: build/libs/*-project.jar
+      # 🟢 FIX: Bypasses the missing repository gradlew jar binary by calling native runner gradle directly
+      - name: Compile and Build Mod with Cloud Gradle
+        run: gradle build
