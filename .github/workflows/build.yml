@@ -8,11 +8,11 @@ jobs:
       - name: Checkout Code Repository Base
         uses: actions/checkout@v4
 
-      - name: Setup Cloud Java 21 Environment
+      - name: Setup Cloud Java 25 Environment
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25' # Changed from 21 to 25 to support Loom 1.19+
 
       - name: Validate Gradle Project Wrapper
         uses: gradle/actions/wrapper-validation@v4
@@ -25,3 +25,4 @@ jobs:
         with:
           name: Vape-Client-Jar
           path: build/libs/*-project.jar
+
