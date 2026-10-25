@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "vapeclient",
+  "id": "gamersutilitycheats",
   "version": "${version}",
-  "name": "Vape Client",
+  "name": "Gamers Utility Cheats",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.client.vape.VapeClient"]
+    "client": ["com.gamers.utility.GamersUtilityClient"]
   },
   "depends": {
     "fabricloader": ">=0.19.3",

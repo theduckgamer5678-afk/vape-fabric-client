@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-	archivesName = "vapeclient"
+	archivesName = "gamersutilitycheats"
 }
 
 repositories {
