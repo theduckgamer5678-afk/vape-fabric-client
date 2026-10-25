@@ -12,20 +12,16 @@ base {
 
 repositories {
 	maven { url = "https://terraformersmc.com" }
-	maven { url = "https://cafeteria.dev" } // Sodium Engine Hosting
+	maven { url = "https://cafeteria.dev" }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	// Automatically pulls yarn mappings targeting 26.3 parameters
-	mappings "net.fabricmc:yarn:${project.minecraft_version}+build.1:v2"
+	// This line tells Loom to build mappings directly from your 26.3 game file instead of checking external yarn servers!
+	mappings loom.officialMojangMappings() 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	
-	// Dynamically hooks into the fabric_api_version variable from your file
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
-	// High-performance Sodium dependency compiled for 26.3
-	modImplementation "me.jellysquid.mods.sodium:sodium-fabric:mc26.3-0.6.0"
 }
 
 processResources {
