@@ -18,11 +18,8 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
     
-	// 🟢 FIX: Replaces the broken official mappings with fallback runtime intermediary translation layers
-	mappings loom.layered() {
-		officialMojangMappings()
-		intermediaryMappings()
-	}
+	// 🟢 FIX: Clean official mojang mappings that automatically use intermediate fallbacks natively
+	mappings loom.officialMojangMappings()
     
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"

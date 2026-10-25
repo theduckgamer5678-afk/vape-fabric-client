@@ -17,6 +17,12 @@ jobs:
       - name: Setup Gradle Build Tool Engine
         uses: gradle/actions/setup-gradle@v4
 
-      # 🟢 FIX: Bypasses the missing repository gradlew jar binary by calling native runner gradle directly
       - name: Compile and Build Mod with Cloud Gradle
         run: gradle build
+
+      # 🟢 FIX: Captures the compiled mod file from the build folder and uploads it to GitHub
+      - name: Upload Finished Compiled Client Jar Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vape-Client-Jar
+          path: build/libs/*.jar
